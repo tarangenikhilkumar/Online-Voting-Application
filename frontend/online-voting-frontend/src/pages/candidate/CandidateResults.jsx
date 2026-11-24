@@ -10,9 +10,10 @@ const CandidateResults = () => {
 
   const electionsFetcher = useCallback(async () => {
     const res = await electionService.getAll({ page: 0, size: 50 })
-    return (res?.data?.content || res?.content || []).filter(
-      (e) => e.status === ELECTION_STATUS.RESULTS_PUBLISHED,
-    )
+    const list = res?.data?.content || res?.content || (Array.isArray(res?.data) ? res.data : Array.isArray(res) ? res : [])
+    return {
+      data: list.filter((e) => e.status === ELECTION_STATUS.RESULTS_PUBLISHED),
+    }
   }, [])
 
   const {
@@ -21,13 +22,13 @@ const CandidateResults = () => {
     error: electionsError,
   } = useFetch(electionsFetcher)
 
-  const elections = electionsData || []
+  const elections = Array.isArray(electionsData) ? electionsData : []
   const activeId = selectedId || (elections.length > 0 ? String(elections[0].id) : '')
 
   const resultFetcher = useCallback(async () => {
-    if (!activeId) return null
+    if (!activeId) return { data: null }
     const res = await resultService.getElectionResults(activeId)
-    return res?.data || res
+    return { data: res?.data ?? res ?? null }
   }, [activeId])
 
   const {
