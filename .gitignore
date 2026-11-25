@@ -1,0 +1,23 @@
+# Java / Maven
+target/
+build/
+*.jar
+*.class
+
+# React / Vite
+node_modules/
+dist/
+.vite/
+.env
+.env.local
+.env.production
+
+# IDEs & OS
+.idea/
+.vscode/
+*.iml
+.settings/
+.project
+.classpath
+.DS_Store
+Thumbs.db
